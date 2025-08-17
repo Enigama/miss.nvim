@@ -1,0 +1,33 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Neovim
+      uses: neovim/setup-action@v1
+      with:
+        neovim-version: stable
+    
+    - name: Install dependencies
+      run: |
+        mkdir -p ~/.local/share/nvim/site/pack/plenary/start
+        git clone https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/plenary/start/plenary.nvim
+    
+    - name: Run tests
+      run: |
+        nvim --headless -c "lua require('tests.plenary.run')" -c "quit"
+    
+    - name: Run tests with coverage (optional)
+      run: |
+        nvim --headless -c "lua require('tests.plenary.run')" -c "quit"
+      continue-on-error: true
