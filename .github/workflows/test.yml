@@ -14,9 +14,9 @@ jobs:
     - uses: actions/checkout@v4
     
     - name: Setup Neovim
-      uses: neovim/setup-action@v1
-      with:
-        neovim-version: stable
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y neovim
     
     - name: Install dependencies
       run: |
